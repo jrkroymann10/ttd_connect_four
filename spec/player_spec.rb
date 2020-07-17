@@ -4,7 +4,7 @@ RSpec.describe Player do
   context 'with input between 1 and 7' do
     it 'asks for input only once' do
       output = ask_for_move_with_input(5)
-      expect(output).to eq "Input an integer between 1 and 7\n"
+      expect(output).to eq "input an integer between 1 and 7, player1:\n"
     end
   end
 
@@ -13,9 +13,9 @@ RSpec.describe Player do
       output = ask_for_move_with_input(9, 8, 7)
 
       expect(output).to eq <<~OUTPUT
-        Input an integer between 1 and 7
-        Invalid. Try again:
-        Invalid. Try again:
+        input an integer between 1 and 7, player1:
+        invalid. try again:
+        invalid. try again:
       OUTPUT
     end
   end
@@ -24,10 +24,10 @@ RSpec.describe Player do
     it 'asks repeatedly until a number between 1 and 7 is provided' do
       output = ask_for_move_with_input(0, -1, 3)
 
-      expect(output).to eq  <<~OUTPUT
-        Input an integer between 1 and 7
-        Invalid. Try again:
-        Invalid. Try again:
+      expect(output).to eq <<~OUTPUT
+        input an integer between 1 and 7, player1:
+        invalid. try again:
+        invalid. try again:
       OUTPUT
     end
   end
@@ -36,9 +36,11 @@ RSpec.describe Player do
     input = StringIO.new(input_numbers.join("\n") + "\n")
     output = StringIO.new
 
-    player = Player.new(input: input, output: output)
-    expect(player.ask_for_move).to be true
+    player = Player.new('player1', 'red', input: input, output: output)
+    expect(player.ask_for_move).to eql(input_numbers.select { |num| num > 0 && num < 8 }[0])
 
     output.string
   end
 end
+
+

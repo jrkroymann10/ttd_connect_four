@@ -1,5 +1,6 @@
 # spec/connect_four_spec
 require './lib/board'
+require './lib/player'
 
 describe Board do
   it 'creates a 6x7 game display of uncolored circles' do
@@ -16,10 +17,11 @@ describe Board do
       expect(board.display[11][213..217]).to eql('33;49')
     end
 
+  describe '#check_col_full'
     it 'returns false if the column is filled to the top' do
       board = Board.new
       6.times { board.mark_spot(1, 'red') }
-      expect(board.mark_spot(1, 'red')).to eql(false)
+      expect(board.check_col_full(1)).to eql(true)
     end
   end
 

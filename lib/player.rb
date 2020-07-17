@@ -1,16 +1,23 @@
+# lib/player
+
 class Player
-  def initialize(input: $stdin, output: $stdout)
+  attr_accessor :color, :name
+  def initialize(name, color, input: $stdin, output: $stdout)
+    @name = name
+    @color = color
     @input = input
     @output = output
   end
 
   def ask_for_move
-    @output.puts 'Input an integer between 1 and 7'
+    input = 0
+    @output.puts "input an integer between 1 and 7, #{@name}:"
     loop do
       input = @input.gets.to_i
-      return true if input >= 1 && input <= 7
+      return input if input >= 1 && input <= 7
 
-      @output.puts 'Invalid. Try again:'
+      @output.puts 'invalid. try again:'
     end
+    input
   end
 end

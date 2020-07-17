@@ -1,8 +1,8 @@
 # lib/board
 require 'colorize'
+require 'pry'
 
 class Board
-
   @@ROWS = {
     1 => 6, 3 => 5, 5 => 4, 7 => 3, 9 => 2, 11 => 1
   }
@@ -32,10 +32,17 @@ class Board
   end
 
   def mark_spot(column, color)
+    # binding.pry
     temp = find_column(column)
     row = find_row(temp)
     new_col = color_to_str(color)
-    row != 0 ? change_circle_color(temp, row, new_col) : false
+    change_circle_color(temp, row, new_col)
+  end
+
+  def check_col_full(column)
+    temp = find_column(column)
+    row = find_row(temp)
+    row.zero?
   end
 
   def win_check(color)
@@ -105,13 +112,16 @@ class Board
       for j in 0..6
         break if result == true
 
-        if @moves[i][j] == color && @moves[i + 1][j + 1] == color && @moves[i + 2][j + 2] == color && @moves[i + 3][j + 3] == color
+        # binding.pry
+        #p [@moves[i][j], [i, j]]
+
+        if i < 3 && j < 4 && @moves[i][j] && @moves[i][j] == color && @moves[i + 1][j + 1] && @moves[i + 1][j + 1] == color && @moves[i + 2][j + 2] && @moves[i + 2][j + 2] == color && @moves[i + 3][j + 3] && @moves[i + 3][j + 3] == color
           result = true
-        elsif @moves[i][j] == color && @moves[i - 1][j - 1] == color && @moves[i - 2][j - 2] == color && @moves[i - 3][j - 3] == color
+        elsif i > 2 && j > 2 && @moves[i][j] && @moves[i][j] == color && @moves[i - 1][j - 1] && @moves[i - 1][j - 1] == color && @moves[i - 2][j - 2] && @moves[i - 2][j - 2] == color && @moves[i - 3][j - 3] && @moves[i - 3][j - 3] == color
           result = true
-        elsif @moves[i][j] == color && @moves[i - 1][j + 1] == color && @moves[i - 2][j + 2] == color && @moves[i - 3][j + 3] == color
+        elsif i > 2 && j < 4 && @moves[i][j] && @moves[i][j] == color && @moves[i - 1][j + 1] && @moves[i - 1][j + 1] == color && @moves[i - 2][j + 2] && @moves[i - 2][j + 2] == color && @moves[i - 3][j + 3] && @moves[i - 3][j + 3] == color
           result = true
-        elsif @moves[i][j] == color && @moves[i + 1][j - 1] == color && @moves[i + 2][j - 2] == color && @moves[i + 3][j - 3] == color
+        elsif i < 3 && j > 2 && @moves[i][j] && @moves[i][j] == color && @moves[i + 1][j - 1] && @moves[i + 1][j - 1] == color && @moves[i + 2][j - 2] && @moves[i + 2][j - 2] == color && @moves[i + 3][j - 3] && @moves[i + 3][j - 3] == color
           result = true
         end
       end
@@ -147,15 +157,3 @@ class Board
     @moves[@@ROWS[row] - 1][@@COLS[temp] - 1] = color
   end
 end
-
-# x = Board.new
-# puts x.display
-# 1.times { x.mark_spot(1, 'yellow') }
-# 2.times { x.mark_spot(2, 'yellow') }
-# 2.times { x.mark_spot(3, 'red') }
-# x.mark_spot(3, 'yellow')
-# 2.times { x.mark_spot(4, 'red') }
-# 2.times { x.mark_spot(4, 'yellow') }
-# puts ''
-# puts x.display
-# p x.win_check('yellow')
